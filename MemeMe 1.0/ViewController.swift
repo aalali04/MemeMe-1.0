@@ -18,6 +18,7 @@ UINavigationControllerDelegate, UITextFieldDelegate{
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var topToolBar: UIToolbar!
     @IBOutlet weak var bottomToolBar: UIToolbar!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
     
     //Mark: the meme text attributes
     let memeTextAttributes: [NSAttributedString.Key: Any] = [
@@ -44,6 +45,7 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         
         textSetUp(textField: bottomTextField, type: "BOTTOM")
         self.bottomTextField.delegate = self
+        self.shareButton.isEnabled = false
         
     }
     
@@ -68,6 +70,8 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
+        self.shareButton.isEnabled = true
+
     }
     
     
@@ -75,7 +79,10 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .camera
+        shareButton.isEnabled = true
         present(imagePicker, animated: true, completion: nil)
+        self.shareButton.isEnabled = true
+
     }
     
     
@@ -90,6 +97,8 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         imagePickerView.image = nil
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
+        self.shareButton.isEnabled = false
+
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
