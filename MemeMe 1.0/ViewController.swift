@@ -83,8 +83,18 @@ UINavigationControllerDelegate, UITextFieldDelegate{
     @IBAction func shareAMeme(_ sender: Any) {
         let memedImage = generateMemedImage()
         let activityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
-        present(activityViewController, animated: true, completion: nil)
+        
+        //check if device is ipad and set the popoverPresentationController
+        if (UIDevice.current.userInterfaceIdiom == .pad)
+        {
+            if (activityViewController.responds(to: #selector(getter: UIViewController.popoverPresentationController)))
+            {
+                activityViewController.popoverPresentationController?.sourceView = super.view
+            }
+        }
 
+        present(activityViewController, animated: true, completion: nil)
+        
         //Completion handler
         activityViewController.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed:
             Bool, arrayReturnedItems: [Any]?, error: Error?) in
@@ -132,7 +142,9 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         self.dismiss(animated: true, completion: nil)
         
         //the share button should be disabled if the image picker is cancelled
-        self.shareButton.isEnabled = false
+        if ( imagePickerView?.image == nil ) {
+            self.shareButton.isEnabled = false
+        }
     }
     
     //Mark: text setup function
@@ -152,7 +164,6 @@ UINavigationControllerDelegate, UITextFieldDelegate{
     
     //keyboard disapears after return
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
         textField.resignFirstResponder()
         return true;
     }
