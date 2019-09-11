@@ -70,25 +70,12 @@ UINavigationControllerDelegate, UITextFieldDelegate{
     
     //Mark: actions
     @IBAction func pickAnImageFromAlbum(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        present(imagePicker, animated: true, completion: nil)
-        
-        //enable the share button after picking an image
-                self.shareButton.isEnabled = true
-
+        pickAnImage(sourceType: .photoLibrary)
     }
     
     
     @IBAction func pickAnImageFromCamera(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        shareButton.isEnabled = true
-        present(imagePicker, animated: true, completion: nil)
-        self.shareButton.isEnabled = true
-
+        pickAnImage(sourceType: .camera)
     }
     
     
@@ -215,6 +202,17 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         return memedImage
     }
     
+    
+    func pickAnImage(sourceType: UIImagePickerController.SourceType) {
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = sourceType
+        present(imagePicker, animated: true, completion: nil)
+        
+        //enable the share button after picking an image
+        self.shareButton.isEnabled = true
+    }
 
 }
 
