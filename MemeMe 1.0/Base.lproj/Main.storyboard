@@ -30,7 +30,7 @@
                                             <action selector="pickAnImageFromAlbum:" destination="BYZ-38-t0r" id="Gzy-MW-avu"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Camera" id="nQ7-qA-Vqc" userLabel="Camera">
+                                    <barButtonItem title="Camera" image="Navigation_Camera_2x" id="nQ7-qA-Vqc" userLabel="Camera">
                                         <connections>
                                             <action selector="pickAnImageFromCamera:" destination="BYZ-38-t0r" id="COe-vW-fxL"/>
                                         </connections>
@@ -55,7 +55,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZ7-lN-W4s">
                                 <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                 <items>
-                                    <barButtonItem title="Share" id="f22-IE-ofV">
+                                    <barButtonItem title="Share" image="Navigation_Action_2x" id="f22-IE-ofV">
                                         <connections>
                                             <action selector="shareAMeme:" destination="BYZ-38-t0r" id="Qed-1f-yrm"/>
                                         </connections>
@@ -104,4 +104,8 @@
             <point key="canvasLocation" x="137.68115942028987" y="137.94642857142856"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Navigation_Action_2x" width="19" height="26.5"/>
+        <image name="Navigation_Camera_2x" width="25" height="19"/>
+    </resources>
 </document>

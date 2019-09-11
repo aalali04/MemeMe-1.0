@@ -90,7 +90,18 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         let memedImage = generateMemedImage()
         let activityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
         present(activityViewController, animated: true, completion: nil)
-        
+
+        //Completion handler
+        activityViewController.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed:
+            Bool, arrayReturnedItems: [Any]?, error: Error?) in
+            if completed {
+                self.save()
+                return
+            }
+            if let shareError = error {
+                print("error while sharing: \(shareError.localizedDescription)")
+            }
+        }
     }
     
     @IBAction func cancel(_ sender: Any) {
@@ -173,6 +184,10 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         return keyboardSize.cgRectValue.height
     }
     
+    func save() {
+        // Create the meme
+        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imagePickerView.image!, memedImage: generateMemedImage())
+    }
     
     func generateMemedImage() -> UIImage {
         
