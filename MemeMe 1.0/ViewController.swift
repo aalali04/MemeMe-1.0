@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  MemeMe 1.0
 //
-//  Created by Alaa Alali on 10/01/1441 AH.
-//  Copyright © 1441 Alaa Alali. All rights reserved.
+//  Created by Alaa Alali on 09/09/2019.
+//  Copyright © 2019 Alaa Alali. All rights reserved.
 //
 
 import UIKit
@@ -69,16 +69,17 @@ UINavigationControllerDelegate, UITextFieldDelegate{
     
     
     //Mark: actions
+    //picking image from the photo library
     @IBAction func pickAnImageFromAlbum(_ sender: Any) {
         pickAnImage(sourceType: .photoLibrary)
     }
     
-    
+    //picking image from the camera
     @IBAction func pickAnImageFromCamera(_ sender: Any) {
         pickAnImage(sourceType: .camera)
     }
     
-    
+    //sharing the meme
     @IBAction func shareAMeme(_ sender: Any) {
         let memedImage = generateMemedImage()
         let activityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
@@ -97,26 +98,41 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         }
     }
     
+    //the cancel button should return all values to default
     @IBAction func cancel(_ sender: Any) {
         imagePickerView.image = nil
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
         self.shareButton.isEnabled = false
-
     }
     
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.shareButton.isEnabled = false
-        self.dismiss(animated: true, completion: nil)
+    
+    //allows the user to open from a souce type to pick an image
+    func pickAnImage(sourceType: UIImagePickerController.SourceType) {
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = sourceType
+        present(imagePicker, animated: true, completion: nil)
+        
+        //enable the share button after picking an image
+        self.shareButton.isEnabled = true
     }
     
+    //set the image in the image view
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             self.imagePickerView.image = image
         }
-        
         self.dismiss(animated: true, completion: nil)
+    }
     
+    //when the image controller cancels
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
+        
+        //the share button should be disabled if the image picker is cancelled
+        self.shareButton.isEnabled = false
     }
     
     //Mark: text setup function
@@ -136,27 +152,27 @@ UINavigationControllerDelegate, UITextFieldDelegate{
     
     //keyboard disapears after return
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-       
-        textField.resignFirstResponder()
         
+        textField.resignFirstResponder()
         return true;
     }
     
-    
+    //subscribe to show/hide keyboard notification
     func subscribeToKeyboardNotifications() {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-
+        
     }
     
+    //unsubscribe to show/hide keyboard notification
     func unsubscribeFromKeyboardNotifications() {
         
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    
+    //the bottom text field is properly shown while typing
     @objc func keyboardWillShow(_ notification:Notification) {
         
         if (self.bottomTextField.isFirstResponder) {
@@ -164,13 +180,14 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         }
     }
     
+    //return the frame to its origin when the keyboard will hide
     @objc func keyboardWillHide(_ notification:Notification) {
         
         view.frame.origin.y = 0
     }
     
  
-    
+    //returns the keyboard height
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
         
         let userInfo = notification.userInfo
@@ -178,11 +195,7 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         return keyboardSize.cgRectValue.height
     }
     
-    func save() {
-        // Create the meme
-        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imagePickerView.image!, memedImage: generateMemedImage())
-    }
-    
+    //generate the memed image
     func generateMemedImage() -> UIImage {
         
         // Hide toolbar and navbar
@@ -198,22 +211,14 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         // Show toolbar and navbar
         self.topToolBar.isHidden = false
         self.bottomToolBar.isHidden = false
-        
+    
         return memedImage
     }
     
-    
-    func pickAnImage(sourceType: UIImagePickerController.SourceType) {
-        
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = sourceType
-        present(imagePicker, animated: true, completion: nil)
-        
-        //enable the share button after picking an image
-        self.shareButton.isEnabled = true
+    //save the create the meme
+    func save() {
+        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imagePickerView.image!, memedImage: generateMemedImage())
     }
-
 }
 
 
