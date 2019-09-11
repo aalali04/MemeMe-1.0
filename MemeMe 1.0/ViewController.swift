@@ -45,6 +45,8 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         
         textSetUp(textField: bottomTextField, type: "BOTTOM")
         self.bottomTextField.delegate = self
+        
+        //share button should be disabled until an image is uploaded
         self.shareButton.isEnabled = false
         
     }
@@ -53,6 +55,8 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         
         super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
+        
+        //disable the camera button if the device doesn't support it
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
 
     }
@@ -70,7 +74,9 @@ UINavigationControllerDelegate, UITextFieldDelegate{
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
-        self.shareButton.isEnabled = true
+        
+        //enable the share button after picking an image
+                self.shareButton.isEnabled = true
 
     }
     
@@ -113,6 +119,7 @@ UINavigationControllerDelegate, UITextFieldDelegate{
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.shareButton.isEnabled = false
         self.dismiss(animated: true, completion: nil)
     }
     
